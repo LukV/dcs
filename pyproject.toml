@@ -1,0 +1,38 @@
+[project]
+name = "dcs"
+version = "0.1.0"
+description = "Dienstencatalogus Search: Hybrid search engine for Dienstencatalogus on Verenigingsloket"
+authors = [{ name = "LukV", email = "luk.verhelst@vlaanderen.be" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+
+dependencies = [
+    "rich>=13.7.0",
+    "fastapi[standard]>=0.115.12",
+    "uvicorn>=0.34.2",
+    "typer>=0.15.2",
+    "dotenv>=0.9.9",
+    "elasticsearch",
+    "beautifulsoup4",
+]
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.8.2",
+    "mypy>=1.15.0",
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.11",
+]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+dcs = "dcs.cli:app"
+
+[tool.commitizen]
+bump_message = "bump: v$current_version → v$new_version"
+tag_format = "v$version"
+update_changelog_on_bump = true
+version_provider = "uv"

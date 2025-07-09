@@ -1,0 +1,17 @@
+{
+    "python.analysis.typeCheckingMode": "standard",
+    "editor.formatOnSave": true,
+    "python.terminal.activateEnvironment": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "always",
+        "source.organizeImports": "always"
+    },
+    "ruff.enable": true,
+    "ruff.lint.enable": true,
+    "ruff.fixAll": true,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
+}

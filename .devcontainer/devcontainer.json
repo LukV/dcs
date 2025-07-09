@@ -1,0 +1,58 @@
+{
+    "name": "dcs",
+    "build": {
+        "context": "..",
+        "dockerfile": "./Dockerfile.dev"
+    },
+    "features": {
+        "ghcr.io/dhoeric/features/hadolint:1": {}
+    },
+    "remoteUser": "vscode",
+    "updateRemoteUserUID": true,
+    "postCreateCommand": "uv sync --frozen",
+    "postStartCommand": "uv run pre-commit install",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "charliermarsh.ruff",
+                "github.copilot",
+                "GitHub.copilot-chat",
+                "exiasr.hadolint",
+                "tamasfe.even-better-toml",
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-python.mypy-type-checker",
+                "github.vscode-github-actions",
+                "pkief.material-icon-theme"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": ".venv/bin/python",
+                "python.terminal.activateEnvironment": true,
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll": "always",
+                    "source.organizeImports": "always"
+                },
+                "editor.rulers": [
+                    120
+                ],
+                "editor.tabSize": 4,
+                "files.autoSave": "onFocusChange",
+                "[python]": {
+                    "editor.defaultFormatter": "charliermarsh.ruff"
+                },
+                "[toml]": {
+                    "editor.formatOnSave": false
+                }
+            }
+        }
+    },
+    "remoteEnv": {
+        "PYTHONPATH": "src",
+        "PYTHONUNBUFFERED": "1",
+        "UV_LINK_MODE": "copy",
+        "UV_PROJECT_ENVIRONMENT": ".venv",
+        "DISPLAY": "dummy"
+    }
+}

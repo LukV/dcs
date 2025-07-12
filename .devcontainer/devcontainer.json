@@ -1,9 +1,8 @@
 {
     "name": "dcs",
-    "build": {
-        "context": "..",
-        "dockerfile": "./Dockerfile.dev"
-    },
+    "dockerComposeFile": "../.devcontainer/docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspace",
     "features": {
         "ghcr.io/dhoeric/features/hadolint:1": {}
     },

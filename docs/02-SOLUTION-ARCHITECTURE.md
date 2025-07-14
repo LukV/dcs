@@ -62,7 +62,7 @@
 
 ```json
 "multi_match": {
-  "query": "bouwvergunning",
+  "query": "vergunning",
   "fields": [
     "naam^3",
     "keywords^5",

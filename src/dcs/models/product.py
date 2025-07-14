@@ -1,3 +1,5 @@
+from typing import TypedDict
+
 from pydantic import BaseModel, Field
 
 
@@ -44,6 +46,35 @@ class DienstRecord(BaseModel):
     product: Product
 
 
+class RegioVoorwaarde(TypedDict):
+    """Type for a condition based on region."""
+
+    regio: list[str]
+
+
+class ThemaVoorwaarde(TypedDict):
+    """Type for a condition based on theme."""
+
+    thema: list[str]
+
+
+class VormVoorwaarde(TypedDict):
+    """Type for a condition based on form."""
+
+    vorm: list[str]
+
+
+class VerenigingVoorwaarde(TypedDict):
+    """Type for a condition based on association."""
+
+    vereniging: list[str]
+
+
+VoorwaardeType = (
+    RegioVoorwaarde | ThemaVoorwaarde | VormVoorwaarde | VerenigingVoorwaarde
+)
+
+
 class CleanedProduct(BaseModel):
     """Model for a cleaned product with normalized fields."""
 
@@ -51,10 +82,10 @@ class CleanedProduct(BaseModel):
     naam: str
     type: str | None = None
     omschrijving: str | None = None
-    voorwaarden: list[dict[str, str]] = Field(default_factory=list)
+    voorwaarden: list[VoorwaardeType] = Field(default_factory=list)
     omschrijving_clean: str | None = None
     voorwaarden_clean: str | None = None
     themas: list[str] = Field(default_factory=list)
-    gemeente: str | None = None  # <-- This fixes your issue
+    gemeente: str | None = None
     laatste_wijzigingsdatum: str | None = None
     keywords: list[str] = Field(default_factory=list)

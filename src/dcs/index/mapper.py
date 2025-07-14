@@ -6,15 +6,18 @@ def product_to_es_doc(product: CleanedProduct) -> dict[str, object]:
     voorwaarden_vorm = []
     voorwaarden_regio = []
     voorwaarden_vereniging = []
+    voorwaarden_thema = []
 
     for item in product.voorwaarden:
         for key, value in item.items():
-            if key.lower() == "vorm":
+            if key == "vorm":
                 voorwaarden_vorm.append(value)
-            elif key.lower() == "regio":
+            elif key == "regio":
                 voorwaarden_regio.append(value)
-            elif key.lower() == "vereniging":
+            elif key == "vereniging":
                 voorwaarden_vereniging.append(value)
+            elif key == "thema":
+                voorwaarden_thema.append(value)
 
     return {
         "id": product.id,
@@ -26,6 +29,7 @@ def product_to_es_doc(product: CleanedProduct) -> dict[str, object]:
         "voorwaarden_vorm": voorwaarden_vorm,
         "voorwaarden_regio": voorwaarden_regio,
         "voorwaarden_vereniging": voorwaarden_vereniging,
+        "voorwaarden_thema": voorwaarden_thema,
         "keywords": product.keywords,
     }
 

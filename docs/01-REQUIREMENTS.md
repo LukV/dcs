@@ -33,7 +33,7 @@ Proces:
 ### 1. Behoud van bestaande zoekfunctionaliteit
 - **Vrije zoektekst**: Flexibele zoekopdrachten over alle dienstbeschrijvingen heen.
 - **Facetten**: Filteren op kernattributen zoals thema, regio, doelgroepen.
-- **Sorteren**: Mogelijkheid tot sorteren op datum, alfabetisch of relevantie.
+- **Sorteren**: Mogelijkheid tot sorteren op datum, alfabetisch.
 - **Paginering**: Resultaten worden gepagineerd weergegeven voor gebruiksgemak en schaalbaarheid.
 
 ### 2. Gepersonaliseerde relevantieranking
@@ -42,20 +42,18 @@ Resultaten worden gerangschikt op basis van de mate waarin een dienst overeenkom
 
 #### a. Gewogen, dynamische attributenmatching
 
-Boost-logica moet instelbaar zijn door beheerders. Gewicht per attribuut:
-- `type` (bv. jeugdvereniging, cultuurvereniging), `locatie` → **hoogste gewicht**
-- `doelgroep` (bv. leeftijdscategorie) → **gemiddeld gewicht**
-- `thema` (bv. sport, cultuur, jeugdwerk) → **laagste gewicht**
+Scoring-logica moet instelbaar zijn door beheerders. Gewicht per attribuut:
+- `type` (bv. vereniging, VZW)
+- `werkingsgebied` (bv. Economie en Werk) → **gemiddeld gewicht**
+- `thema` (bv. sport, cultuur, jeugdwerk) → **lager gewicht**
 - …
 
 Gebruik het verenigingprofiel om:
 - Extra queryvoorwaarden toe te voegen (bv. type, regio, doelgroep).
-- Boosting parameters dynamisch aan te passen.
+- Scoring parameters dynamisch aan te passen.
   - Bv: als type = jeugdvereniging, verhoog de relevantie van diensten die dat als voorwaarde hebben.
 
 Deze gewichten bepalen het relatieve belang van verschillende voorwaarden bij de relevantiescore.
-
-
 
 #### b. Ad nominatum-diensten
 
@@ -63,20 +61,13 @@ Sommige diensten richten zich expliciet op specifieke verenigingen:
 - Indien de aangemelde vereniging expliciet vermeld wordt → **sterke positieve boost**
 - Indien niet vermeld → **uitsluiten** uit de zoekresultaten
 
-#### c. Toekomst: Gebruikssignalen
+#### c. Toekomst: Vereniging historiek
 
 In latere releases willen we ook rekening houden met effectief gebruik:
 - Historiek van reeds afgenomen diensten
 - Goedgekeurde dossiers of subsidieaanvragen
 
 Deze gedragscontext verhoogt de relevantie van zoekresultaten.
-
-#### Volwaardige ondersteuning voor de Nederlandse taal
-
-- Ondersteuning voor Nederlandse **lemmatisatie en stemming**
-- **Samenstellingen** correct behandelen (bv. “cultuurbeleid” vs. “cultuur”)
-- **Typotolerantie** bij veelvoorkomende spellingfouten
-- Tools met **native ondersteuning voor Nederlands** genieten de voorkeur (bv. Elasticsearch’s Dutch analyzer of alternatieven)
 
 ### 4. Geavanceerde full-text search
 
@@ -86,7 +77,14 @@ Om zoekervaring en relevantie te verbeteren:
 - **Typotolerantie**: Foutenmarge bij spelling
 - **Vector search**: Zoekresultaten rangschikken op basis van semantische gelijkenis via embeddings
 
-⚠️ *Vector search heeft prioriteit boven synoniemen*, gezien het beter scoort op het interpreteren van vage of complexe zoekvragen.
+⚠️ *Vector search heeft voordelen boven synoniemen*, gezien het beter scoort op het interpreteren van vage of complexe zoekvragen en geen complex beheer van synoniemen vergt.
+
+#### Volwaardige ondersteuning voor de Nederlandse taal
+
+- Ondersteuning voor Nederlandse **lemmatisatie en stemming**
+- **Samenstellingen** correct behandelen (bv. “cultuurbeleid” vs. “cultuur”)
+- **Typotolerantie** bij veelvoorkomende spellingfouten
+- Tools met **native ondersteuning voor Nederlands** genieten de voorkeur (bv. Elasticsearch’s Dutch analyzer of alternatieven)
 
 ### 5. Fijnmazige rankinglogica
 
@@ -114,7 +112,7 @@ Het team heeft beperkte expertise rond infrastructuur en DevOps. De focus ligt o
 
 ### 2. Licenties en onafhankelijkheid
 
-Ondanks de focus op eenvoud wil het team:
+Afgewogen tegen eenvoud wil het team:
 - **Heldere, voorspelbare licentievoorwaarden**
 - **Geen vendor lock-in** of op z’n minst een **duidelijke migratie-optie**
 - **Open source-componenten** zijn gewenst waar mogelijk, of anders goed gedocumenteerde API’s en exportmechanismen

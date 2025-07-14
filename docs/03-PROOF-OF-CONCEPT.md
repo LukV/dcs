@@ -1,6 +1,6 @@
 # Proof of Concept voor Dienstencatalogus
 
-De Proof-Of-Concept indexeert het aanbode uit de dienstencatalogus maakt die doorzoekbaar via Elasticsearch.
+De Proof-Of-Concept indexeert het aanbod uit de dienstencatalogus maakt die doorzoekbaar via Elasticsearch.
 
 ## 1. Indexering en Mapping
 

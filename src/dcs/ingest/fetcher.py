@@ -31,7 +31,7 @@ async def fetch_page(
     response = await client.get(BASE_URL, params=params, headers=headers)
     console.print(f"🔍 Page {page} → Status {response.status_code}")
     data = response.json()
-    return data.get("inhoud", {}).get("elementen", [])
+    return data.get("inhoud", {}).get("elementen", [])  # type: ignore  # noqa: PGH003
 
 
 async def fetch_all(
@@ -53,7 +53,7 @@ async def fetch_all(
     return all_items
 
 
-def ingest(max_pages: int, per_page: int, start_at: int) -> None:
+def fetch(max_pages: int, per_page: int, start_at: int) -> None:
     """Fetch Dienstencatalogus data and save to /data/raw as JSON."""
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     all_items = asyncio.run(fetch_all(max_pages, per_page, start_at))

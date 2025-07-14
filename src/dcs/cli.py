@@ -5,10 +5,11 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from dcs.index.es_client import get_client
-from dcs.index.indexer import drop_index, index_all, search_diensten
 from dcs.ingest.cleaner import clean_all
-from dcs.ingest.fetcher import ingest
+from dcs.ingest.fetcher import fetch
+from dcs.lexicalsearch.es_client import get_client
+from dcs.lexicalsearch.index import drop_index, index_all
+from dcs.lexicalsearch.search import search_diensten
 
 console = Console()
 app = typer.Typer(help="📥 Dienstencatalogus CLI")
@@ -20,33 +21,59 @@ def say(word: str) -> None:
     typer.echo(f"{word} you say?")
 
 
-@app.command()
-def fetch(max_pages: int = 50, per_page: int = 100, start_at: int = 1) -> None:
+@app.command("fetch")
+def fetcher(max_pages: int = 50, per_page: int = 100, start_at: int = 1) -> None:
     """Download raw Dienstencatalogus data to disk."""
-    ingest(max_pages, per_page, start_at)
+    fetch(max_pages, per_page, start_at)
 
 
 @app.command()
-def clean() -> None:
+def clean(
+    output_file: Path = typer.Argument(  # noqa: B008
+        ...,
+        help="Pad naar het uitvoerbestand waarin de opgeschoonde JSON-data wordt weggeschreven.",  # noqa: E501
+    ),
+) -> None:
     """Clean downloaded Dienstencatalogus data."""
-    clean_all()
+    clean_all(output_file=output_file)
 
 
 @app.command()
-def index() -> None:
-    """Index cleaned Dienstencatalogus records into Elasticsearch."""
-    index_all()
+def index(
+    index_name: str = typer.Argument(
+        ..., help="Naam van de Elasticsearch-index (verplicht)"
+    ),
+    file_path: Path = typer.Argument(  # noqa: B008
+        ...,
+        exists=True,
+        readable=True,
+        help="Pad naar het JSON-bestand met te indexeren records",
+    ),
+) -> None:
+    """Indexeert records uit een JSON-bestand in de opgegeven Elasticsearch-index."""
+    typer.echo(f"📥 Indexeren van bestand: {file_path}")
+    typer.echo(f"📦 Doelindex: {index_name}")
+
+    index_all(index_name=index_name, file_path=file_path)
 
 
 @app.command()
-def drop() -> None:
+def drop(
+    index: str = typer.Argument(
+        help="Te verwijderen index",
+    ),
+) -> None:
     """Drop the Elasticsearch index."""
     client = get_client()
-    drop_index(client)
+    drop_index(client, ix=index)
 
 
 @app.command()
 def search(  # noqa: PLR0913
+    ix: str = typer.Option(
+        "diensten",
+        help="Te doorzoeken index (standaard: diensten)",
+    ),
     query: str | None = typer.Option(None, help="Zoekterm"),
     thema: list[str] | None = typer.Option(None, help="Filter op thema"),  # noqa: B008
     gemeente: str | None = typer.Option(None, help="Filter op gemeente"),
@@ -68,6 +95,7 @@ def search(  # noqa: PLR0913
 
     result = search_diensten(
         client,
+        ix=ix,
         query=query,
         themas=thema,
         gemeente=gemeente,

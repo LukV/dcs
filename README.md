@@ -4,8 +4,8 @@ This repository contains a Proof-of-Concept (PoC) for a **personalized search en
 
 ## 🎯 Goal
 
-The PoC demonstrates how to search for public services relevant to specific types of **verenigingen** (e.g., youth organizations, sports clubs), while:
-- Respecting standard filters like `type`, `overheid`, and `thema`
+The PoC demonstrates how to search for **diensten** by the Flemish government to specific types of **verenigingen** (e.g., non profits), while:
+- Respecting standard filters like `type`, `werkingsgebeid`, and `thema`
 - Ranking results based on profile relevance (e.g., `doelgroep`, `regio`, `sector`)
 - Supporting sorting by `relevance` or `last updated`
 
@@ -21,15 +21,13 @@ The PoC demonstrates how to search for public services relevant to specific type
 
 ### 1. **CLI (`cli.py`)**
 - Downloads and normalizes Dienstencatalogus data
-- Cleans HTML fields
-- Infers target audiences (`doelgroepen`) using regex or LLMs
 - Indexes documents into Elasticsearch
 
 ### 2. **API (`api.py`)**
 - `/search` endpoint accepts:
   - keyword query
   - UI filters (e.g. type, thema, overheid)
-  - sort mode (`relevance` or `date`)
+  - sort mode (eg `relevance`)
   - Vereniging profile (`regio`, `doelgroep`, `sector`)
 - Constructs hybrid query in Elasticsearch with filtering and profile-based boosting
 
@@ -45,12 +43,12 @@ The PoC demonstrates how to search for public services relevant to specific type
 ## ✅ Usage
 
 - Start the DevContainer (`Reopen in Container` in VSCode)
-- Run the CLI to index data:
+- Run the CLI:
   ```bash
-  dci index --help
+  dcs --help
   ```
-- Run the FastAPI app:
+- Run the API:
   ```bash
-  uv run uvicorn api.main:app --reload
+  make serve
   ```
 - Query the API at: `http://localhost:8000/docs`
